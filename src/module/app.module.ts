@@ -5,19 +5,21 @@ import { TodoEntity } from '../entities/todo.entity.js';
 import { DatabaseService } from '../database/database-service.js';
 import { AuthModule } from '../auth/auth.module.js';
 import { TodoModule } from '../todo/todo.module.js';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
+ 
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'saidat1985',
-      database: 'todo-nest',
+      url: process.env.DATABASE_URL!,
       synchronize: true,
       logging: false,
       autoLoadEntities: true, // 🔥 NestJS way
+      ssl: process.env.NODE_ENV === 'production'
+    ? { rejectUnauthorized: false }
+    : false,
     }),
 
     TypeOrmModule.forFeature([UserEntity, TodoEntity]),
