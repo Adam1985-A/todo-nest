@@ -17,9 +17,8 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
       logging: false,
       autoLoadEntities: true, // 🔥 NestJS way
-      ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: false }
-    : false,
+      ssl:{ rejectUnauthorized: false },
+    
     }),
 
     TypeOrmModule.forFeature([UserEntity, TodoEntity]),
